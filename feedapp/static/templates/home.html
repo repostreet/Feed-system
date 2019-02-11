@@ -1,0 +1,96 @@
+<div class="container">
+    <div class="input-group">
+        <input type="text" class="form-control" id="usr" ng-model="search_text" required="required" placeholder="Search..">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="searchCtrl()">Search!</button>
+        </span>
+    </div><br>
+    <div class="jumbotron" style="background-image: url('/static/images/feed.jpg'); background-size: cover;">
+        <h3 style="text-align: center; font-size: 24px; color: #fff; font-weight: bold;">Welcome to Instafeed Updates</h3><br>
+        <div>
+            <ul class="nav nav-pills">
+                <li role="presentation"><a href="#!/" class="feed-tab">Feed home</a></li>
+                <li role="presentation"><a href="#!/notification" class="feed-tab">Notificaion</a></li>
+                <li role="presentation"><a href="#" class="feed-tab">logout</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row marketing text-center">
+        <h3>Pondering about something</h3>
+        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Compose..</button>
+        <br><br><br>
+        <div class="col-lg-12" ng-repeat="article in live_feed">
+            <div class="feed-card">
+                <div><img src="[[article.media_url]]" id="logo"></div>
+                <br>
+                <h4>[[article.title]]</h4>
+                <p ng-bind-html="article.body">[[article.body]]</p><br>
+                <div>
+                    <ul class="nav nav-pills">
+                        <li ng-hide=[[article.liked]] role="presentation"><button class="btn btn-info btn-xs" style="min-height: 25px;" ng-click="likeArticle(article.id)" id="article_[[article.id]]"><span class="glyphicon glyphicon-heart"></span>([[article.likers.length]])</button></li>
+
+                        <li ng-show=[[article.liked]] role="presentation"><button class="btn btn-toolbar btn-xs" style="min-height: 25px;"><span class="glyphicon glyphicon-heart"></span> ([[article.likers.length]])</button></li>
+
+                        <li role="presentation"><p style="color: #5cb85c; padding-left: 10px; padding-right: 10px;" id="article_[[article.id]]_liked"></p></li>
+
+                        <li role="presentation"><button class="btn btn-info btn-xs" ng-click="show_comment([[article.id]])" style="min-height: 25px;">View comment</button></li>
+
+                        <li role="presentation"><button class="btn btn-success btn-xs" style="min-height: 25px;" ng-click="showCommentBox(article.id)">comment</button></li>
+                    </ul>
+                </div>
+                <br>
+                <div ng-show="show_comment_box_[[article.id]]">
+                    <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched" rows="2" id="comment_[[article.id]]"></textarea>
+                    <p>[[ comment_posted_message ]]</p>
+                    <div class="form-group" id="hide_comment_box">
+                        <button type="submit" class="btn btn-success" style="min-height: 25px; text-align: left;" ng-click="submitComment(article.id)">Post</button>
+                    </div>
+                </div>
+                <div ng-show="show_comment_list_[[article.id]]">
+                    <ul class="list-group" ng-repeat="comment in article.comments">
+                        <li class="list-group-item"><p ng-bind-html="comment.comment_body">[[comment.comment_body]]</p> - <p>[[comment.user_username]]</p></li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>© 2016 Company, Inc.</p>
+    </footer>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Compose..</h4>
+            </div>
+            <div class="modal-body">
+                <form ng-hide="hide_article_form">
+                    <div class="form-group">
+                      <label for="title">About:</label>
+                      <input type="text" class="form-control" id="usr" ng-model="article.title" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="body">Thought:</label>
+                        <textarea class="form-control" rows="5" id="comment" ng-model="article.body" required="required"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Upload an image:</label>
+                        <input type="file" id="file" required="required" name="file" multiple/>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success" ng-click="submitArtcileForm()">Compose</button>
+                    </div>
+                </form>
+                <h3>[[form_submitted_message]]</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

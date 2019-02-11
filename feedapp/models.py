@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 
 NOTIFICATION_TYPE = (
-    ('LIKE', 'Liked'),
-    ('COMMENT', 'Commented')
+    ('Liked', 'Liked'),
+    ('Commented', 'Commented')
 )
 
 
@@ -18,8 +18,8 @@ class Article(models.Model):
     have liked the article.
     """
 
-    title = models.CharField(max_length=100)
-    body = models.CharField(max_length=100)
+    title = models.CharField(max_length=1000)
+    body = models.CharField(max_length=1000)
     media_url = models.CharField(max_length=1000, null=True)
     written_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     likers = models.ManyToManyField(User, related_name='article_likers')
@@ -35,7 +35,7 @@ class Article(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        ordering = ['timestamp', 'title']
+        ordering = ['-timestamp', 'title']
         verbose_name = 'Posted article'
         verbose_name_plural = 'Posted article list'
 
@@ -52,8 +52,8 @@ class Comment(models.Model):
     # article_instance = models.Foriegnkey(
     #     Article, on_delete=models.CASCADE, related_name='comment_list')
 
-    comment_body = models.CharField(max_length=100)
-    user_username = models.CharField(max_length=100)
+    comment_body = models.CharField(max_length=1000)
+    user_username = models.CharField(max_length=1000)
     article_id = models.IntegerField()
 
     def __str__(self):
@@ -62,7 +62,7 @@ class Comment(models.Model):
         return '{} commented - {}'.format(username, text)
 
     class Meta:
-        ordering = ['user_username']
+        ordering = ['-pk', 'user_username']
         verbose_name = 'Posted comment'
         verbose_name_plural = 'Posted comment list'
 
@@ -81,6 +81,6 @@ class Notification(models.Model):
         return self.user_instance.username
 
     class Meta:
-        ordering = ['user_instance__username']
+        ordering = ['-pk', 'user_instance__username']
         verbose_name = 'Notification'
         verbose_name_plural = 'Notification list'

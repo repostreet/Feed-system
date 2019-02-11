@@ -1,0 +1,53 @@
+.login-form {
+    width: 340px;
+    margin: 50px auto;
+}
+.login-form form {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    background: #fff;
+    border: #dff0d8 1px solid;
+    padding: 30px;
+}
+.login-form h2 {
+    margin: 0 0 15px;
+}
+.form-control, .btn {
+    min-height: 38px;
+    border-radius: 2px;
+}
+.btn {        
+    font-size: 15px;
+    font-weight: bold;
+}
+body {
+    background: #f7f8fa;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.form-control {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.small-welcome {
+    color: #999;
+    font-size: 16px;
+}
+.error-text{
+    color: #a94250;
+}
+.feed-card {
+    padding: 5%;
+    background-color: #fff;
+    border: 1px solid #dff0d8; 
+}
+.feed-tab{
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#logo {
+  width: 100%;
+  height: auto;
+}

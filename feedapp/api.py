@@ -1,13 +1,18 @@
 # Core import
-import threading
+import os
+import json
+import asyncio
 from collections import defaultdict
 
 # Third party import
+import websockets
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 from django.db.utils import IntegrityError
 
@@ -22,24 +27,19 @@ from .models import (
 from .constants import (
     ERROR_MESSAGE, SUCCESS_MESSAGE
 )
-from .utils import upload_handler
+from src import settings
 
 
 class ArticlePostAPI(APIView):
 
     def post(self, request, format=None):
-        files = request.FILES.getlist('files')
         serilized_data = ArticlePOSTSerializer(data=request.data)
-
-        file_upload_thread = threading.Thread(
-            target=upload_handler, args=(files,))
-        file_upload_thread.start()
 
         if serilized_data.is_valid():
             article_instance = serilized_data.save()
             article_instance.written_by = request.user
             article_instance.save()
-            response = SUCCESS_MESSAGE.get('article')
+            response = {'article_id': article_instance.id}
             status_code = status.HTTP_201_CREATED
 
         else:
@@ -92,7 +92,7 @@ class LikeAPIView(APIView):
             article_instance.save()
 
             Notification.objects.get_or_create(
-                notification_type='LIKE',
+                notification_type='Liked',
                 user_instance=article_instance.written_by,
                 article_instance=article_instance,
                 engager_name=request.user
@@ -100,7 +100,7 @@ class LikeAPIView(APIView):
             response = SUCCESS_MESSAGE.get('like')
             status_code = status.HTTP_200_OK
 
-        except (IntegrityError, Article.DoesNotExist) as e:
+        except (IntegrityError, Article.DoesNotExist, TypeError) as e:
             response = ERROR_MESSAGE.get('like')
             status_code = status.HTTP_400_BAD_REQUEST
             print(e)
@@ -132,7 +132,7 @@ class CommentPostAPI(APIView):
         try:
             article_instance = Article.objects.get(id=article_id)
             Notification.objects.create(
-                notification_type='COMMENT',
+                notification_type='Commented',
                 user_instance=article_instance.written_by,
                 article_instance=article_instance,
                 engager_name=request.user
@@ -156,6 +156,8 @@ class NotificationGetAPI(APIView):
 
 class AuthenticationAPI(APIView):
 
+    permission_classes = (AllowAny, )
+
     def post(self, request, format=None):
         response = {}
         status_code = status.HTTP_400_BAD_REQUEST
@@ -175,7 +177,7 @@ class AuthenticationAPI(APIView):
                 status_code = status.HTTP_200_OK
 
             else:
-                response['message'] = 'Check your email and password.'
+                response['error'] = 'Check your email and password.'
 
         except (User.DoesNotExist,) as e:
             response['error'] = 'Check your email or password.'
@@ -185,6 +187,8 @@ class AuthenticationAPI(APIView):
 
 
 class RegistrationAPI(APIView):
+
+    permission_classes = (AllowAny, )
 
     def post(self, request, format=None):
         serilized_data = UserSerializer(data=request.data)
@@ -230,3 +234,68 @@ class SearchAPI(APIView):
         user_instances = User.objects.filter(username=text)
         result = [{'username': user.username} for user in user_instances]
         return result
+
+
+def upload_file(request, id):
+    """File upload controller."""
+    if request.method == 'POST':
+        try:
+            article_instance = Article.objects.get(id=id)
+            try:
+                files = request.FILES.getlist('file')
+                file_path = upload_handler(files)[0]
+                article_instance.media_url = '/media/{}'.format(file_path)
+                article_instance.save()
+                context = {'message': 'Upload Succesfull'}
+                asyncio.run(update_live_feed(article_instance, request))
+                return JsonResponse()
+            except:
+                asyncio.run(update_live_feed(article_instance, request))
+                context = {'message': 'Error Processing File.'}
+                return JsonResponse(context)
+        except:
+            context = {'message': 'Failed to upload File.'}
+            return JsonResponse(context)
+
+
+def upload_handler(files):
+    """Save the uploaded file."""
+    file_path = []
+    if files:
+        try:
+            for file in files[:1]:
+                file_name = file.name
+                path_to_upload = os.path.join(settings.MEDIA_ROOT, file_name)
+                if not os.path.exists(settings.MEDIA_ROOT):
+                    os.mkdir('media')
+                file_path.append(file_name)
+                path_to_upload = open(path_to_upload, 'wb+')
+                file_data = file.chunks()
+                for data in file_data:
+                    path_to_upload.write(data)
+        except:
+            pass
+
+    return file_path
+
+
+async def update_live_feed(data, request):
+    """
+    Take the input, creates a connection to socket server.
+    Send the data to the server
+    """
+    async with websockets.connect(
+            'ws://localhost:8765') as websocket:
+        try:
+            article = ArticleGETSerializer(data).data
+            likers = [like.get('username')
+                      for like in article.get('likers')]
+            if request.user.username in likers:
+                article['liked'] = True
+            else:
+                article['liked'] = False
+            result = json.dumps(article)
+            await websocket.send(result)
+            print('Sent....')
+        except:
+            pass

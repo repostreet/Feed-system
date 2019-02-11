@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="jumbotron" style="background-image: url('/static/images/feed.jpg'); background-size: cover;">
+        <h3 style="text-align: center; font-size: 24px; color: #fff; font-weight: bold;">Welcome to Instafeed Updates</h3><br>
+        <div>
+            <ul class="nav nav-pills">
+                <li role="presentation"><a href="#!/" class="feed-tab">Feed home</a></li>
+                <li role="presentation"><a href="#!/notification" class="feed-tab">Notificaion</a></li>
+                <li role="presentation"><a href="#" class="feed-tab">logout</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row marketing text-center">
+        <h4 style="text-align: center; font-size: 24px; font-weight: bold;">Recent notification</h4><br><br>
+        <div class="list-group">
+            <a href="#" class="list-group-item" ng-repeat="notification in notifications">
+                <p class="list-group-item-text"><strong>[[notification.engager_name.username]]</strong> [[notification.notification_type]] on your post - [[notification.article_instance.title]]</p><br>
+            </a>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>© 2016 Company, Inc.</p>
+    </footer>
+</div>

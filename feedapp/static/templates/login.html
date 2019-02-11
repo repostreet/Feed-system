@@ -1,0 +1,19 @@
+<div style="background-image: url('/static/images/basehome.jpg'); background-size: cover; height: 500px;">
+    <div class="login-form">
+        <form>
+            <h4 class="text-center small-welcome">Welcome to instafeed</h4>
+            <h2 class="text-center">Log in</h2>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Username" required="required" ng-model="user.username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" required="required"ng-model="user.password">
+            </div>
+            <p class="error-text text-center">[[error]]</p>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-block" ng-click="submitLoginForm()">Log in</button>
+            </div>
+        </form>
+        <p class="text-center"><a href="#!/registration" style="color: #3c763d; text-decoration: none; font-size: 15px;">Create an Account</a></p>
+    </div>
+</div>

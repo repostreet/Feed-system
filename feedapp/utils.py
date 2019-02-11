@@ -1,11 +1,7 @@
 # Core import
-import os
 import re
 
-# App level import
-from src import settings
-
-OPEN_HTML_TAG_HASH = '<a href="/search/{}/{}">'
+OPEN_HTML_TAG_HASH = '<a href="#!/search/{}/{}">'
 
 
 def get_markup_text(raw_body):
@@ -27,7 +23,7 @@ def get_markup_text(raw_body):
 
             if word[0] == '#':
                 opening_html_tag = OPEN_HTML_TAG_HASH.format(
-                    full_word[0], 'hastag')
+                    full_word[0], 'hashtag')
                 cleaned_word.append('#')
             else:
                 opening_html_tag = OPEN_HTML_TAG_HASH.format(
@@ -38,26 +34,14 @@ def get_markup_text(raw_body):
             cleaned_word.append(full_word[0])
             closing_html_tag = '</a>'
             cleaned_word.append(closing_html_tag)
-            cleaned_word.append(word.replace('#' + full_word[0], ''))
+
+            if word[0] == '#':
+                cleaned_word.append(word.replace('#' + full_word[0], ''))
+            else:
+                cleaned_word.append(word.replace('@' + full_word[0], ''))
+
             word = ''.join(cleaned_word)
 
         result.append(word)
 
     return ' '.join(result)
-
-
-def upload_handler(files):
-    """Save the uploaded file."""
-    if files:
-        try:
-            for file in files[:10]:
-                file_name = file.name
-                path_to_upload = os.path.join(settings.MEDIA_ROOT, file_name)
-                if not os.path.exists(settings.MEDIA_ROOT):
-                    os.mkdir('media')
-                path_to_upload = open(path_to_upload, 'wb+')
-                file_data = file.chunks()
-                for data in file_data:
-                    path_to_upload.write(data)
-        except:
-            pass

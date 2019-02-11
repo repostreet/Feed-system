@@ -1,0 +1,31 @@
+
+<div style="background-image: url('/static/images/basehome.jpg'); background-size: cover; height: 500px;">
+    <div class="login-form">
+        <form ng-hide="hide_form">
+            <h4 class="text-center small-welcome">Welcome to instafeed</h4>
+            <h2 class="text-center">Sign up</h2>
+
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Username" ng-model="user.username" required="required">
+            </div>
+            <p class="error-text text-center">[[error.username]]</p>
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Email" required="required"
+                ng-model="user.email">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" required="required" ng-model="user.password1">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" required="required" ng-model="user.password2">
+            </div>
+            <p class="error-text text-center">[[error.password]]</p>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-block" ng-click="submitRegistrationForm()">Sign up</button>
+            </div>
+            <p class="text-center"><a href="#!/login/" style="color: #3c763d; text-decoration: none; font-size: 15px;">Already have an account? Sign in.</a></p>
+        </form>
+        <br><br>
+        <h3>[[form_submitted_message]]</h3>
+    </div>
+</div>

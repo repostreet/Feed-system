@@ -9,7 +9,7 @@ from .views import (
 from .api import (
     AuthenticationAPI, RegistrationAPI,
     ArticlePostAPI, FeedGetAPI, LikeAPIView, CommentPostAPI,
-    NotificationGetAPI, SearchAPI
+    NotificationGetAPI, SearchAPI, upload_file
 )
 
 urlpatterns = [
@@ -20,6 +20,7 @@ urlpatterns = [
     path('live-feed/', FeedGetAPI.as_view(), name='live_feed'),
     path('comment/', CommentPostAPI.as_view(), name='create_comment'),
     path('like/', LikeAPIView.as_view(), name='create_like'),
+    re_path('upload-file/(?P<id>[\w]+)/', upload_file, name='upload_image'),
     re_path('search/(?P<query>[\w]+)/(?P<type>[\w]+)/$', SearchAPI.as_view(), name='search_api'),
     path('notification/', NotificationGetAPI.as_view(),
          name='fetch_notification')
