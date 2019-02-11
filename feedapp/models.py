@@ -24,7 +24,7 @@ class Article(models.Model):
     written_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     likers = models.ManyToManyField(User, related_name='article_likers')
     contain_media = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return self.title
@@ -55,7 +55,7 @@ class Comment(models.Model):
     comment_body = models.CharField(max_length=1000)
     user_username = models.CharField(max_length=1000)
     article_id = models.IntegerField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         username = self.user_username
