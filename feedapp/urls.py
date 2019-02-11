@@ -21,7 +21,7 @@ urlpatterns = [
     path('comment/', CommentPostAPI.as_view(), name='create_comment'),
     path('like/', LikeAPIView.as_view(), name='create_like'),
     re_path('upload-file/(?P<id>[\w]+)/', upload_file, name='upload_image'),
-    re_path('search/(?P<query>[\w]+)/(?P<type>[\w]+)/$', SearchAPI.as_view(), name='search_api'),
+    re_path('search/(?P<query>[\w|\W]+)/(?P<type>[\w]+)/$', SearchAPI.as_view(), name='search_api'),
     path('notification/', NotificationGetAPI.as_view(),
          name='fetch_notification')
 ]

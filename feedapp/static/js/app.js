@@ -37,7 +37,7 @@ application.config(['$routeProvider', '$locationProvider', function($routeProvid
 
 }]);
 
-application.controller("homeController", function($scope, $http, $window, $location){
+application.controller("homeController", function($scope, $http, $window, $location, $route){
     var authToken = $window.localStorage.getItem('token');
     var url = hostname + /create-article/;
     var live_feed_url = hostname + '/live-feed/'
@@ -175,6 +175,12 @@ application.controller("homeController", function($scope, $http, $window, $locat
         $location.url(search_title_url);
     }
 
+    $scope.logoutCtrl = function() {
+        console.log('Okay');
+        $window.localStorage.removeItem('token');
+        $route.reload();
+    }
+
 });
 
 application.controller("registrationController", function($scope, $http, $window, $location){
@@ -200,7 +206,7 @@ application.controller("registrationController", function($scope, $http, $window
                 data: data,
             }).then(function(response){
                 $scope.hide_form = true;
-                $scope.form_submitted_message = response.data['message'];
+                $scope.form_submitted_message = true;
 
             }).catch(function(error){
                 for (var key in error.data) {
@@ -214,7 +220,6 @@ application.controller("registrationController", function($scope, $http, $window
 application.controller("loginController", function($scope, $http, $window, $location){
     var url = hostname + '/login/';
     var headers = {}
-    $scope.error = {}
 
     $scope.submitLoginForm = function() {
         var data = $scope.user;
@@ -227,6 +232,7 @@ application.controller("loginController", function($scope, $http, $window, $loca
             $window.localStorage.setItem('token', response.data['Authorization']);
             $location.url('/');
         }).catch(function(error){
+            $scope.error = {}
             $scope.error = error.data['error'];
         });
     }

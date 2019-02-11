@@ -177,10 +177,10 @@ class AuthenticationAPI(APIView):
                 status_code = status.HTTP_200_OK
 
             else:
-                response['error'] = 'Check your email and password.'
+                response['error'] = 'Check your username or password.'
 
         except (User.DoesNotExist,) as e:
-            response['error'] = 'Check your email or password.'
+            response['error'] = 'Check your username or password.'
             print(e)
 
         return Response(response, status=status_code)
@@ -226,9 +226,19 @@ class SearchAPI(APIView):
         return result.data
 
     def get_hastag_search(self, text):
-        article_instances = Article.objects.filter(body__contains=text)
-        result = ArticleGETSerializer(article_instances, many=True)
-        return result.data
+        try:
+            article_instances = Article.objects.filter(body__contains=text)
+            comment_instances = Comment.objects.filter(
+                comment_body__contains=text)
+            articles = ArticleGETSerializer(article_instances, many=True)
+            comments = CommentGETSerializer(comment_instances, many=True)
+            all_result = articles.data + comments.data
+            all_result = sorted(
+                all_result, key=lambda x: x.get('timestamp'), reverse=True)
+        except:
+            all_result = []
+
+        return all_result
 
     def get_person_search(self, text):
         user_instances = User.objects.filter(username=text)

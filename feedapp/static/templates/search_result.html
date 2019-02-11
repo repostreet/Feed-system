@@ -1,11 +1,17 @@
 <div class="container">
     <div class="row marketing text-center">
-        <h4 style="text-align: center; font-size: 24px; font-weight: bold;">Search Result</h4><br><br>
+        <h4 style="text-align: center; font-size: 24px; font-weight: bold;">Search Result</h4>
+        <a href="#!/" class="feed-tab" style="color: #61b45c">Back to feed</a>
+        <br><br>
         <div class="feed-card" ng-repeat="article in search_result_list" style="padding-top: 10px; padding-bottom: 10px; margin-bottom: 9px;">
             <div class="">
+                <p ng-show="[[article.body === undefined]]">Comment</p>
+                <p ng-hide="[[article.body === undefined]]">Post</p>
+
                 <h4>[[article.title]]</h4>
                 <h3>[[article.username]]</h3>
                 <p ng-bind-html="article.body">[[article.body]]</p><br>
+                <p ng-bind-html="article.comment_body">[[article.comment_body]]</p><br>
                 <div>
             </div>
         </div>

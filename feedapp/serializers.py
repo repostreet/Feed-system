@@ -42,7 +42,7 @@ class ArticleGETSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ('id', 'title', 'body', 'media_url',
-                  'likers', 'contain_media')
+                  'likers', 'contain_media', 'timestamp')
 
 
 class CommentPOSTSerializer(serializers.ModelSerializer):
@@ -68,7 +68,8 @@ class CommentGETSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'comment_body', 'user_username', 'article_id')
+        fields = ('id', 'comment_body', 'user_username',
+                  'article_id', 'timestamp')
 
 
 class NotificationGETSerializer(serializers.ModelSerializer):

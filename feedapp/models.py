@@ -55,6 +55,7 @@ class Comment(models.Model):
     comment_body = models.CharField(max_length=1000)
     user_username = models.CharField(max_length=1000)
     article_id = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         username = self.user_username
