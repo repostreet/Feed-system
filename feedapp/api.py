@@ -226,6 +226,7 @@ class SearchAPI(APIView):
         return result.data
 
     def get_hastag_search(self, text):
+        text = '#' + text
         try:
             article_instances = Article.objects.filter(body__contains=text)
             comment_instances = Comment.objects.filter(
