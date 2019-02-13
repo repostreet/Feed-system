@@ -249,6 +249,7 @@ class SearchAPI(APIView):
 
 def upload_file(request, id):
     """File upload controller."""
+
     if request.method == 'POST':
         try:
             article_instance = Article.objects.get(id=id)
@@ -259,7 +260,7 @@ def upload_file(request, id):
                 article_instance.save()
                 context = {'message': 'Upload Succesfull'}
                 asyncio.run(update_live_feed(article_instance, request))
-                return JsonResponse()
+                return JsonResponse({'message': 'File uploaded successfully.'})
             except:
                 asyncio.run(update_live_feed(article_instance, request))
                 context = {'message': 'Error Processing File.'}
