@@ -2,12 +2,11 @@ Create a folder with any name and navigate inside it.
 
 1. Installing python 3.7 -
 
-   a. sudo apt-get update
-   b. sudo apt-get install software-properties-common
-
-   c. sudo add-apt-repository ppa:deadsnakes/ppa
-   d. sudo apt-get update
-   e. sudo apt-get install python3.7
+   a. sudo apt-get update  
+   b. sudo apt-get install software-properties-common  
+   c. sudo add-apt-repository ppa:deadsnakes/ppa  
+   d. sudo apt-get update  
+   e. sudo apt-get install python3.7  
 
 2. Creating virtualenv -
 
