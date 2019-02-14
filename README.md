@@ -14,7 +14,7 @@ Create a folder with any name and navigate inside it.
    mkvirtualenv --python=python3.7 <env_name>
 
    # else
-   virtualenv -p /usr/bin/python3.7 <env_name>
+   virtualenv -p /usr/bin/python3.7 <env_name>    
    source env_name/bin/activate
 
 3. Pulling the repo into your system -
@@ -23,17 +23,17 @@ Create a folder with any name and navigate inside it.
 
 4. Installing the dependencies - 
 
-   cd feedapp
+   cd feedapp  
    pip freeze -r requirements.txt
 
 5. Database migrations - 
 
-   python manage.py makemigrations
+   python manage.py makemigrations    
    python manage.py migrate
 
 6. Running the app
 
-   a. python manage.py runserver
+   a. python manage.py runserver  
    b. Open a new terminal and navigate inside
       the cloned repo i,e feedapp and activate
       the virtualenv. Then navigate inside socket_server
