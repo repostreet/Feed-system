@@ -2,12 +2,12 @@ Create a folder with any name and navigate inside it.
 
 1. Installing python 3.7 -
 
-   sudo apt-get update
-   sudo apt-get install software-properties-common
+   a. sudo apt-get update
+   b. sudo apt-get install software-properties-common
 
-   sudo add-apt-repository ppa:deadsnakes/ppa
-   sudo apt-get update
-   sudo apt-get install python3.7
+   c. sudo add-apt-repository ppa:deadsnakes/ppa
+   d. sudo apt-get update
+   e. sudo apt-get install python3.7
 
 2. Creating virtualenv -
 
@@ -34,8 +34,8 @@ Create a folder with any name and navigate inside it.
 
 6. Running the app
 
-   1. python manage.py runserver
-   2. Open a new terminal and navigate inside
+   a. python manage.py runserver
+   b. Open a new terminal and navigate inside
       the cloned repo i,e feedapp and activate
       the virtualenv. Then navigate inside socket_server
       folder and run the follwing cmd - 
