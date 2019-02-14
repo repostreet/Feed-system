@@ -24,7 +24,7 @@ Create a folder with any name and navigate inside it.
 4. Installing the dependencies - 
 
    cd feedapp  
-   pip freeze -r requirements.txt
+   pip install -r requirements.txt
 
 5. Database migrations - 
 
