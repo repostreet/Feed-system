@@ -40,6 +40,8 @@ Create a folder with any name and navigate inside it.
       folder and run the follwing cmd - 
       python server.py 
 
+7. Open browser and hit 'http://localhost:8000'
+
 Best regards, 
 samim
 
